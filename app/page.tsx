@@ -3,8 +3,16 @@
 import { useEffect, useState } from 'react'
 import { supabase } from './lib/supabase'
 
+interface Contacto {
+  id: string
+  nombre: string
+  empresa: string
+  cargo: string
+  email: string
+}
+
 export default function Home() {
-  const [contactos, setContactos] = useState<any[]>([])
+  const [contactos, setContactos] = useState<Contacto[]>([])
   const [nombre, setNombre] = useState('')
   const [empresa, setEmpresa] = useState('')
   const [cargo, setCargo] = useState('')
@@ -17,7 +25,7 @@ export default function Home() {
 
   async function cargarContactos() {
     const { data } = await supabase.from('contactos').select('*').order('created_at', { ascending: false })
-    if (data) setContactos(data)
+    if (data) setContactos(data as Contacto[])
   }
 
   async function agregarContacto() {
@@ -31,7 +39,7 @@ export default function Home() {
     cargarContactos()
   }
 
-  async function eliminarContacto(id) {
+  async function eliminarContacto(id: string) {
     await supabase.from('contactos').delete().eq('id', id)
     cargarContactos()
   }
@@ -73,7 +81,7 @@ export default function Home() {
           </tr>
         </thead>
         <tbody>
-          {contactos.map((c: any) => (
+          {contactos.map((c) => (
             <tr key={c.id} style={{ borderBottom: '1px solid #f5f5f5' }}>
               <td style={{ padding: '14px 0', fontWeight: 500 }}>{c.nombre}</td>
               <td style={{ padding: '14px 0', color: '#555' }}>{c.empresa}</td>
@@ -93,5 +101,5 @@ export default function Home() {
   )
 }
 
-const inputStyle = { padding: '10px 12px', borderRadius: 8, border: '1px solid #e5e5e5', fontSize: 14, width: '100%', boxSizing: 'border-box' as const }
-const btnStyle = { background: '#111', color: '#fff', border: 'none', borderRadius: 8, padding: '8px 16px', fontSize: 13, cursor: 'pointer' }
+const inputStyle: React.CSSProperties = { padding: '10px 12px', borderRadius: 8, border: '1px solid #e5e5e5', fontSize: 14, width: '100%', boxSizing: 'border-box' }
+const btnStyle: React.CSSProperties = { background: '#111', color: '#fff', border: 'none', borderRadius: 8, padding: '8px 16px', fontSize: 13, cursor: 'pointer' }
