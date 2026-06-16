@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { supabase } from './lib/supabase'
 
 export default function Home() {
-  const [contactos, setContactos] = useState([])
+  const [contactos, setContactos] = useState<any[]>([])
   const [nombre, setNombre] = useState('')
   const [empresa, setEmpresa] = useState('')
   const [cargo, setCargo] = useState('')
